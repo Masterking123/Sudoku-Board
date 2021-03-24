@@ -12,27 +12,31 @@ export const valid = (arr) => {
   }
 
   let boxes = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
+  const errors = [];
 
   for (var i = 0; i < 9; i++) {
     for (var j = 0; j < 9; j++) {
       if (board[i][j] !== "") {
         for (var k = 0; k < 9; k++) {
           if (k !== j && board[i][j] === board[i][k]) {
-            return false;
+            errors.push([i, j]);
           }
           if (k !== i && board[i][j] === board[k][j]) {
-            return false;
+            errors.push([i, j]);
           }
         }
         let index = Math.floor(i / 3) * 3 + Math.floor(j / 3);
         if (board[i][j] in boxes[index]) {
-          return false;
+          errors.push([i, j]);
         } else {
           boxes[index][board[i][j]] = index;
         }
       }
     }
   }
-
-  return true;
+  if (errors.length >= 1) {
+    console.log(errors);
+    return [false, errors];
+  }
+  return [true, null];
 };

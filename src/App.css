@@ -130,13 +130,20 @@ Variables
   font-size: 25px;
 }
 #validButton {
-  margin-right: 300px;
+  margin-right: 400px;
   margin-top: -35px;
   font-size: 20px;
 }
 #solveButton {
-  margin-left: 300px;
+  margin-left: 400px;
   font-size: 20px;
+}
+#clearButton {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+error {
+  background-color: red;
 }
 
 html,

@@ -4,7 +4,8 @@ import { valid } from "./functions/valid";
 import { solve } from "./functions/solve";
 
 const Solver = () => {
-  const [grid, setGrid] = useState(["", ""]);
+  const [grid, setGrid] = useState([]);
+  const [highlight, setHighlight] = useState([]);
 
   const createRandom = () => {
     let newGrid = [...grid];
@@ -14,17 +15,36 @@ const Solver = () => {
     setGrid(newGrid);
   };
 
+  const onClear = () => {
+    let emptyGrid = [];
+    for (let i = 0; i < 81; i++) {
+      emptyGrid.push("");
+    }
+    setGrid(emptyGrid);
+  };
+
   const onSolve = () => {
-    if (valid(grid) === true) {
+    if (valid(grid)[0] === true) {
       let result = solve(grid);
-      setGrid(result);
+      let bool = true;
+      for (let _ = 0; _ < 81; _++) {
+        if (result[_] !== grid[_]) {
+          bool = false;
+          break;
+        }
+      }
+      if (bool === false) {
+        setGrid(result);
+      } else {
+        alert("This grid has no solutions");
+      }
     } else {
       alert("This Grid has some errors");
     }
   };
 
   const onValid = () => {
-    if (valid(grid) === true) {
+    if (valid(grid)[0] === true) {
       alert("This Grid is good to solve");
     } else {
       alert("This Grid has some errors");
@@ -46,92 +66,12 @@ const Solver = () => {
 
   useEffect(() => {
     let emptyGrid = [];
+    let boolGrid = [];
     for (var _ = 0; _ < 81; _++) {
       emptyGrid.push("");
     }
-    setGrid([
-      "5",
-      "3",
-      "",
-      "",
-      "7",
-      "",
-      "",
-      "",
-      "",
-      "6",
-      "",
-      "",
-      "1",
-      "9",
-      "5",
-      "",
-      "",
-      "",
-      "",
-      "9",
-      "8",
-      "",
-      "",
-      "",
-      "",
-      "6",
-      "",
-      "8",
-      "",
-      "",
-      "",
-      "6",
-      "",
-      "",
-      "",
-      "3",
-      "4",
-      "",
-      "",
-      "8",
-      "",
-      "3",
-      "",
-      "",
-      "1",
-      "7",
-      "",
-      "",
-      "",
-      "2",
-      "",
-      "",
-      "",
-      "6",
-      "",
-      "6",
-      "",
-      "",
-      "",
-      "",
-      "2",
-      "8",
-      "",
-      "",
-      "",
-      "",
-      "4",
-      "1",
-      "9",
-      "",
-      "",
-      "5",
-      "",
-      "",
-      "",
-      "",
-      "8",
-      "",
-      "",
-      "7",
-      "9",
-    ]);
+    setGrid(emptyGrid);
+    setHighlight(emptyGrid);
   }, []);
 
   var tdCells = [];
@@ -148,6 +88,7 @@ const Solver = () => {
           onWheel="this.blur()"
           onChange={handleChange}
           value={grid[i]}
+          isHighlight={highlight[i]}
         />
       </td>
     );
@@ -156,6 +97,7 @@ const Solver = () => {
       tdCells = [];
     }
   }
+  console.log(trCells[0]);
 
   return (
     <>
@@ -170,6 +112,9 @@ const Solver = () => {
           </button>
           <button className="btn" id="validButton" onClick={onValid}>
             Valid
+          </button>
+          <button className="btn" id="clearButton" onClick={onClear}>
+            Clear
           </button>
           <button className="btn">
             <Link to="/" style={{ textDecoration: "none" }}>
